@@ -13,7 +13,6 @@ struct RequestCodable: Codable {
 }
 
 struct Product : Codable {
-    
     let id: Int
     let name: String
     let desc: String

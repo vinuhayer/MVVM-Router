@@ -13,7 +13,7 @@ import UIKit
 protocol VCConfig {
     /// An associatedType RequiredParams (no-type until protocol is adopted).
     associatedtype RequiredParams
-    /// Function configure accepting a paramater of type RequiredParams
+    /// Function configure accepting a parameter of type RequiredParams
     func config(with params: RequiredParams)
 }
 
@@ -35,10 +35,25 @@ class Router {
         return navigation
     }()
     
-    /// Navigate to a VC Type conforming to VCConfig Protocol
-    /// - parameter to: A VC Type of UIViewController which conforms to VCConfig Protocol
-    /// - parameter action: A case from NavigationAction enum
-    /// - parameter closure: A generic type U to return the requirements of (to) VC
+    /**
+     Navigate to a VC Type conforming to VCConfig Protocol
+
+     # Usage #
+     * A navigation method
+     ```
+     Router.shared.navigate(to: ProductDetailVC.self, action: .push) { () -> ProductDetailVC.RequiredParams in
+         return self.vm.products[indexPath.row]
+     }
+     ```
+     - parameter to: A VC Type of UIViewController which conforms to **VCConfig** Protocol
+     - parameter action: A case from NavigationAction *enum*
+     - parameter closure: A generic type U to return the requirements of (to) VC
+     - returns: No return value
+     - remark: There's a counterpart for this method for VC's having no conformance to **VCConfig** Protocol
+     - precondition: VC conformance to **VCConfig** protocol
+     - requires: A VC and an action is required
+     - warning: VC is not accessible for delegation or calling closures
+    */
     func navigate <T: UIViewController & VCConfig, U: Any> (to: T.Type, action: NavigationAction, closure: (() -> U)?) {
         
         // FIXME: T is not accessible for delegation or calling closures
